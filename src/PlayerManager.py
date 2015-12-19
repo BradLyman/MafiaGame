@@ -28,4 +28,4 @@ class PlayerManager:
         return self.components[compName][pId]
 
     def getPlayersWithComponent(self, comp):
-        return self.component[comp.name]
+        return self.components[comp.name]

@@ -4,9 +4,6 @@ class PlayerType:
     def __init__(self, typeName):
         self.typeName = typeName
 
-    def getPlayerName(self):
-        return self.typeName
-
     def __str__(self):
         return self.typeName
 
@@ -16,8 +13,14 @@ class PlayerName:
     def __init__(self, name):
         self.playerName = name
 
-    def getPlayerName(self):
-        return self.playerName
-
     def __str__(self):
         return self.playerName
+
+class DayActions:
+    name = "DayActions"
+
+    def __init__(self, actionNames):
+        self.actionNames = actionNames
+
+    def __str__(self):
+        return self.actionNames.__str__()

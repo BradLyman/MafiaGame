@@ -1,5 +1,5 @@
 from Action import *
-from Globals import *
+import Globals
 
 class Player:
 	def __init__(self, name):
@@ -10,8 +10,7 @@ class Player:
 		self.msg = ''
 		self.log = []
 	def getGlobalTrait(self, trait):
-		print(globalPlayerTraits)
-		for player in globalPlayerTraits:
+		for player in Globals.globalPlayerTraits:
 			print(player)
 			if self.name == player['name']:
 				return player[trait]
@@ -27,7 +26,7 @@ class Player:
 			return self.traits[trait]
 		else:
 			# This will return False if trait not present.
-			return self.getGlobalTrait(trait) 
+			return self.getGlobalTrait(trait)
 	def takeAction(self):
 		if self.currentAction < 0:
 			self.addMsg('No action taken.')

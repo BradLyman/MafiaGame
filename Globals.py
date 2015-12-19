@@ -1,1 +1,1 @@
-globalPlayerTraits = [{}]
+globalPlayerTraits = []

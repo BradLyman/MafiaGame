@@ -32,5 +32,5 @@ class Vigilence(Action):
 		# You can be vigilent against a target, even if they are guarded.
 		return False
 	def do(self, performer, targets):
-		performer.traits['vigilent'] = [targets]
-		super().do(performer, targets)
+		performer.traits['vigilent'] = targets[0]
+		return super().do(performer, targets)

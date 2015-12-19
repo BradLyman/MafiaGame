@@ -11,9 +11,9 @@ class Player:
 		self.log = []
 	def getGlobalTrait(self, trait):
 		for player in Globals.globalPlayerTraits:
-			print(player)
 			if self.name == player['name']:
-				return player[trait]
+				try: return player[trait]
+				except: return False
 		# It is important to note, that a trait will return False, if it doesn't exist
 		return False
 	def addMsg(self, newMsg):
@@ -47,7 +47,7 @@ class Citizen(Player):
 		self.traits['vigilent'] = False
 		self.actions += [Vigilence()]
 	def killBy(self, killer):
-		if killer == self.traits['vigilent'][0]:
+		if killer == self.traits['vigilent']:
 			self.addMsg('Your vigilence saved you from %s!' % killer.name)
 			return False
 		else:

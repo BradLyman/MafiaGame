@@ -1,6 +1,7 @@
 from PlayerManager import PlayerManager
 from Components import *
 import logging as log
+import random
 
 # set logger level, this should realy be done at
 # program start
@@ -12,14 +13,27 @@ class Game:
         self.players = [];
         for i in range(0,playerCount):
             self.players.append(
-                self.createCitizen()
+                self.createPlayer()
             )
         log.info(self.players)
         self.setupPlayerNames()
 
+    def createPlayer(self):
+        # TODO: make this choice less stupid
+        creator = random.choice([
+            self.createCitizen,
+            self.createMafia
+        ])
+        return creator()
+
     def createCitizen(self):
         pId = self.pm.createPlayer()
         self.pm.setComponent(pId, PlayerType("Citizen"))
+        return pId
+
+    def createMafia(self):
+        pId = self.pm.createPlayer()
+        self.pm.setComponent(pId, PlayerType("Mafia"))
         return pId
 
     def setupPlayerNames(self):

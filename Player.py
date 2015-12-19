@@ -1,5 +1,8 @@
+from Action import *
+from Globals import *
+
 class Player:
-	__init__(self, name):
+	def __init__(self, name):
 		self.traits = {'alive' : True, 'targets' : []}
 		self.actions = [] 		# To be filled with "Action" objects
 		self.name = name
@@ -7,24 +10,26 @@ class Player:
 		self.msg = ''
 		self.log = []
 	def getGlobalTrait(self, trait):
+		print(globalPlayerTraits)
 		for player in globalPlayerTraits:
+			print(player)
 			if self.name == player['name']:
 				return player[trait]
 		# It is important to note, that a trait will return False, if it doesn't exist
 		return False
 	def addMsg(self, newMsg):
-		self.msg += newMsg + '/r/n'
+		self.msg += newMsg + '\r\n'
 	def killBy(self, killer):
 		self.traits['alive'] = False
 		return True
 	def investigateBy(self, investigator, trait):
 		if trait in self.traits:
 			return self.traits[trait]
-		else getGlobalTrait(self, trait):
+		else:
 			# This will return False if trait not present.
-			return getGlobalTrait(self, trait) 
+			return self.getGlobalTrait(trait) 
 	def takeAction(self):
-		if self.currentAction >= 0:
+		if self.currentAction < 0:
 			self.addMsg('No action taken.')
 			return
 		else:
@@ -33,5 +38,21 @@ class Player:
 	def cleanUp(self):
 		self.traits['targets'] = []
 		self.currentAction = -1
-		self.log += self.msg
+		self.log += [self.msg]
 		self.msg = ''
+
+class Citizen(Player):
+	def __init__(self, name):
+		super().__init__(name)
+		self.traits['allegience'] = 'Town'
+		self.traits['vigilent'] = False
+		self.actions += [Vigilence()]
+	def killBy(self, killer):
+		if killer == self.traits['vigilent'][0]:
+			self.addMsg('Your vigilence saved you from %s!' % killer.name)
+			return False
+		else:
+			return super().killBy(killer)
+	def cleanUp(self):
+		self.traits['vigilent'] = False
+		super().cleanUp()

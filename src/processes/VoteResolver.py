@@ -1,14 +1,12 @@
-from components.Vote import Vote
-
 def process(pm):
     results       = {}
-    voteDirectory = pm.getComponentDirectory(Vote.name)
+    voteDirectory = pm.getComponentDirectory('vote')
 
-    for pId, vote in voteDirectory.items():
-        if vote.target in results:
-            results[vote.target] += 1
+    for pId, targetPid in voteDirectory.items():
+        if targetPid in results:
+            results[targetPid] += 1
         else:
-            results[vote.target] = 1
+            results[targetPid] = 1
 
     # note -- ambiguous result in case of tie
     toKillPId  = max(results, key=(lambda key: results[key]))

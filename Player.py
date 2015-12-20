@@ -9,6 +9,7 @@ class Player:
 		self.currentAction = -1
 		self.msg = ''
 		self.log = []
+
 	def getGlobalTrait(self, trait):
 		for player in Globals.globalPlayerTraits:
 			if self.name == player['name']:
@@ -41,6 +42,8 @@ class Player:
 		self.msg = ''
 
 class Citizen(Player):
+	title = 'Citizen'
+	description = 'A good guy who has a chance to protect himself.'
 	def __init__(self, name):
 		super().__init__(name)
 		self.traits['allegience'] = 'Town'
@@ -54,4 +57,15 @@ class Citizen(Player):
 			return super().killBy(killer)
 	def cleanUp(self):
 		self.traits['vigilent'] = False
+		super().cleanUp()
+
+class Mafian(Player):
+	title = 'Mafian'
+	description = 'A bad guy.  One bad guy can kill per turn.'
+	def __init__(self, name):
+		super().__init__(name)
+		self.traits['allegience'] = 'Mafia'
+		self.actions += [MafiaHit()]
+	def cleanUp(self):
+		MafiaHit.alreadyDone = False
 		super().cleanUp()

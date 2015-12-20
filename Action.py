@@ -34,3 +34,18 @@ class Vigilence(Action):
 	def do(self, performer, targets):
 		performer.traits['vigilent'] = targets[0]
 		return super().do(performer, targets)
+
+class MafiaHit(Action):
+	alreadyDone = False
+	def __init__(self):
+		self.totalTargets = 1
+		super().__init__()
+	def perform(self, performer, targets):
+		if MafiaHit.alreadyDone:
+			performer.addMsg('Someone in your mafia already tried "MafiaHit"')
+			return False
+		else:
+			MafiaHit.alreadyDone = True
+			super().perform(performer, targets)
+	def do(self, performer, targets):
+		return targets[0].killBy(performer)

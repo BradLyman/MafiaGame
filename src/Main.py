@@ -1,5 +1,5 @@
 from PlayerManager import *
-import SetupGame
+import processes.SetupGame as SetupGame
 
 pm = PlayerManager()
 SetupGame.process(pm)

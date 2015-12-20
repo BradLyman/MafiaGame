@@ -1,9 +1,18 @@
 from util import getIntInput
+from components.DayActions import DayActions as DayActionsComp
 
 def _promptName(pId):
     return input(
         "Please enter name for player {}:  ".format(pId)
     )
+
+def _setupPlayer(pm, pId):
+    name = _promptName(pId)
+    pm.setComponent(pId, 'name', name)
+
+    actions = DayActionsComp(['vote'])
+    pm.setComponent(pId, DayActionsComp.typeName, actions)
+
 
 def process(pm):
     playerCount = getIntInput(
@@ -12,6 +21,6 @@ def process(pm):
     )
     for i in range(0, playerCount):
         pId  = pm.createPlayer()
-        name = _promptName(pId)
-        pm.setComponent(pId, 'name', name)
+        _setupPlayer(pm, pId)
+
     print('Finished setting up {} players'.format(playerCount))

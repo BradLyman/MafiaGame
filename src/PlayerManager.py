@@ -9,6 +9,11 @@ class PlayerManager:
         self.nextPId += 1
         return pId
 
+    def removePlayer(self, pId):
+        for compName, directory in self.components.items():
+            if pId in directory:
+                del directory[pId]
+
     def hasComponent(self, pId, compName):
         if compName not in self.components:
             return False

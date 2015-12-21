@@ -9,7 +9,6 @@ class Player:
 		self.currentAction = -1
 		self.msg = ''
 		self.log = []
-
 	def getGlobalTrait(self, trait):
 		for player in Globals.globalPlayerTraits:
 			if self.name == player['name']:

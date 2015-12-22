@@ -20,6 +20,17 @@ def getIntOrFalse(message):
 	try: return int(value)
 	except: return False
 
+# Return True or False, based on input of "y" or "n".
+def getYesOrNo(message):
+	while True:
+		response = input(message)
+		if response == 'y':
+			return True
+		elif response == 'n':
+			return False
+		else:
+			print('Invalid input!')
+
 # Convert the role list from dict (used for display purposes) to a shuffled list.
 def rolesDictToList(usedRoles):
 	listRoles = []
@@ -55,3 +66,15 @@ def createPlayerList(listRoles):
 		newName = input("What is Player %s's name?  " % (i + 1))
 		playerList += [role(newName)]
 	return playerList
+
+# Create and name a list of teams
+def createTeams():
+	teams = []
+	while True
+		newTeamName = input("What is team %s's name?  Leave blank to finish team creation." % )
+		if not newTeamName: break
+		isThreat = getYesOrNo('Is this team a threat? (y/n):  ')
+		killsPerTurn = getIntOrFalse('How many kills per night are available to this team?  ')
+		collaborative = getYesOrNo('Can this team collaborate? (y/n):  ')
+		teams += Team(newTeamName, collaboative, isThreat, killsPerTurn)
+	return teams

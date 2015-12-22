@@ -1,6 +1,25 @@
 from Action import *
 import Globals
 
+class Team:
+	def __init__(self, name, collaborative = False, isThreat = False, killsPerTurn = 0):
+		self.members = []
+		self.killsLeft = killsPerTurn
+		self.killsPerTurn = killsPerTurn
+		self.isThreat = isThreat
+	def addPlayer(self, player):
+		self.members += player
+		player.team = self
+	def createPlayer(self, role):
+		name = input('Give Player Name:  ')
+		self.members = role(name)
+	def getLivingPlayers(self):
+		living = 0
+		for member in self.members:
+			if member.traits['alive']:
+				living += 1
+		return living
+
 class Player:
 	def __init__(self, name):
 		self.traits = {'alive' : True, 'targets' : []}
@@ -9,6 +28,7 @@ class Player:
 		self.currentAction = -1
 		self.msg = ''
 		self.log = []
+		self.team = Team('Independent')
 	def getGlobalTrait(self, trait):
 		for player in Globals.globalPlayerTraits:
 			if self.name == player['name']:

@@ -11,7 +11,7 @@ class Action:
 	def checkPerformer(self, performer):
 		return performer.getGlobalTrait('blocked')
 	def do(self, performer, targets):
-		# This is where the specifiquit()c action will take place for subclasses.
+		# This is where the specific action will take place for subclasses.
 		return True
 	def perform(self, performer, targets):
 		self.validateTargets(targets)
@@ -35,7 +35,7 @@ class Vigilence(Action):
 		performer.traits['vigilent'] = targets[0]
 		return super().do(performer, targets)
 
-class MafiaHit(Action):
+class TakeOut(Action):
 	def __init__(self):
 		self.totalTargets = 1
 		super().__init__()

@@ -31,23 +31,22 @@ def getYesOrNo(message):
 		else:
 			print('Invalid input!')
 
-# Convert the role list from dict (used for display purposes) to a shuffled list.
-def rolesDictToList(usedRoles):
+# Convert the role list from dict (used for display purposes) to a list of (role, team) tuples.
+def rolesDictToList(usedRoles, team):
 	listRoles = []
 	for key in usedRoles:
-		listRoles += [key] * usedRoles[key]
-	shuffle(listRoles)
+		listRoles += [(key, team)] * usedRoles[key]
 	return listRoles
 
 # Prompt the user to choose roles and the quantity of each.
-def getListOfRoles():
+def getListOfTeamRoles(team):
 	usedRoles = {}
 	while True:
-		print('Select a role to be in the game:')
+		print('Select roles for team "%s".' % team.name)
 		displayRolesDesc(availableRoles)
 		selection = getIntOrFalse('(Leave blank to start game):  ')
 		if not selection:
-			return rolesDictToList(usedRoles)
+			return rolesDictToList(usedRoles, team)
 		selectedRole = availableRoles[selection - 1]
 		qty = getIntOrFalse('How many %ss would you like?\r\n(Leave blank to pick a different role):  ' % selectedRole.title)
 		if not qty: continue
@@ -70,11 +69,31 @@ def createPlayerList(listRoles):
 # Create and name a list of teams
 def createTeams():
 	teams = []
-	while True
-		newTeamName = input("What is team %s's name?  Leave blank to finish team creation." % )
+	while True:
+		newTeamName = input("What is team %s's name?  Leave blank to finish team creation." % (len(teams) + 1))
 		if not newTeamName: break
 		isThreat = getYesOrNo('Is this team a threat? (y/n):  ')
 		killsPerTurn = getIntOrFalse('How many kills per night are available to this team?  ')
 		collaborative = getYesOrNo('Can this team collaborate? (y/n):  ')
-		teams += Team(newTeamName, collaboative, isThreat, killsPerTurn)
+		teams += [Team(newTeamName, collaborative, isThreat, killsPerTurn)]
 	return teams
+
+def getRoles(teams):
+	listRoles = []
+	for i in teams:  #ha!
+		listRoles += getListOfTeamRoles(i)
+	return listRoles
+
+# Take a list of (role, team) tuples, and create players on those teams.
+def addPlayersToTeams(listRoles):
+	shuffle(listRoles)
+	playerList = []
+	for i, pair in enumerate(listRoles):
+		name = input('Player %s, what is your name?  ' % (i + 1))
+		playerList += [pair[1].createPlayer(pair[0], name)]
+	return playerList
+
+
+teams = createTeams()
+roles = getRoles(teams)
+players = addPlayersToTeams(roles)

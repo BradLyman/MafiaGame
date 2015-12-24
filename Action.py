@@ -25,9 +25,22 @@ class Action:
 		else:
 			performer.addMsg('Your action failed.')
 
+
+# Priorities:
+#	(0) Thumb - twiddling
+#	(1) Generic Blocking
+#	(2) Kill Protection
+#	(3) Kills
+#	(4) Information-Gathering
+#	(5) Saves
+
+
 class Vigilence(Action):
 	def __init__(self):
+		self.name = 'Vigilence'
+		self.description = 'You are protected if your target tries to kill you.'
 		self.totalTargets = 1
+		self.priority = 2
 		super().__init__()
 	def checkTargets(self, performer, targets):
 		# You can be vigilent against a target, even if they are guarded.
@@ -38,7 +51,10 @@ class Vigilence(Action):
 
 class TakeOut(Action):
 	def __init__(self):
+		self.name = 'Take Out'
+		self.description = 'Kill a Player.'
 		self.totalTargets = 1
+		self.priority = 3
 		super().__init__()
 	def perform(self, performer, targets):
 		if performer.Team.killsLeft < 1:
@@ -49,3 +65,12 @@ class TakeOut(Action):
 			super().perform(performer, targets)
 	def do(self, performer, targets):
 		return targets[0].killBy(performer)
+
+class DoNothing(Action):
+	def __init__(self):
+		self.name = 'Do Nothing'
+		self.description = 'You do not do anything this phase.'
+		self.totalTargets = 0
+		self.priority = 0
+	def do(self, performer, targets):
+		performer.msgAdd('Your thumbs are tired, from all the twiddling!')

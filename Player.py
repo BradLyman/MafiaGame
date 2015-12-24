@@ -35,9 +35,9 @@ class Team:
 class Player:
 	def __init__(self, name):
 		self.traits = {'alive' : True, 'targets' : []}
-		self.actions = [] 		# To be filled with "Action" objects
+		self.actions = [DoNothing()] 		# To be filled with "Action" objects
 		self.name = name
-		self.currentAction = -1
+		self.currentAction = self.actions[0]
 		self.msg = ''
 		self.log = []
 		self.team = Team('Independent')
@@ -63,16 +63,11 @@ class Player:
 			return self.getGlobalTrait(trait)
 	# Perform the action selected, if able.
 	def takeAction(self):
-		if self.currentAction < 0:
-			self.addMsg('No action taken.')
-			return
-		else:
-			# The action will check if the target is guarded, or if performer is blocked.
-			self.actions[self.currentAction].perform(performer = self, targets = self.traits['targets'])
+		self.currentAction.perform(performer = self, targets = self.traits['targets'])
 	# Should run after every round.  Moves messages to log, then clears the log.
 	def cleanUp(self):
 		self.traits['targets'] = []
-		self.currentAction = -1
+		self.currentAction = self.actions[0]
 		self.log += [self.msg]
 		self.msg = ''
 

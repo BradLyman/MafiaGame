@@ -57,11 +57,11 @@ class TakeOut(Action):
 		self.priority = 3
 		super().__init__()
 	def perform(self, performer, targets):
-		if performer.Team.killsLeft < 1:
+		if performer.team.killsLeft < 1:
 			performer.addMsg('Your team has no more kills left this turn.')
 			return False
 		else:
-			performer.Team.killsLeft -= 1
+			performer.team.killsLeft -= 1
 			super().perform(performer, targets)
 	def do(self, performer, targets):
 		return targets[0].killBy(performer)
@@ -73,4 +73,5 @@ class DoNothing(Action):
 		self.totalTargets = 0
 		self.priority = 0
 	def do(self, performer, targets):
-		performer.msgAdd('Your thumbs are tired, from all the twiddling!')
+		performer.addMsg('Your thumbs are tired, from all the twiddling!')
+		return True

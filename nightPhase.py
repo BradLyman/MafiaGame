@@ -39,3 +39,18 @@ def promptPlayerForAction(player,playerList):
 		indexTarget = getIntOrFalse('Who is target # %s?  ' % i)
 		targets += [validTargets[indexTarget]]
 	return targets, action, priority
+
+# Create a list of players, ordered by action priority, shuffling within each priority.
+def orderActions(actionDict):
+	inOrder = []
+	for i in range(0, 7):
+		nextActions = actionDict[i]
+		if nextActions:
+			shuffle(nextActions)
+			inOrder += nextActions
+	return inOrder
+
+# Have each player perform its action.
+def doActions(players):
+	for player in actionSequence:
+		player.takeAction()

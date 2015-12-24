@@ -1,5 +1,6 @@
 class Action:
 	def __init__(self):
+		self.targetRequirements = {'alive' : True}
 		pass
 	def validateTargets(self, targets):
 		assert len(targets) == self.totalTargets, 'Invalid number of targets.  Expected: %s, Actual: %s' % (self.totalTargets, len(targets))

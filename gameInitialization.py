@@ -93,7 +93,9 @@ def addPlayersToTeams(listRoles):
 		playerList += [pair[1].createPlayer(pair[0], name)]
 	return playerList
 
-
-teams = createTeams()
-roles = getRoles(teams)
-players = addPlayersToTeams(roles)
+# Start the game!  Return a list of teams, and a list of players (in order of sign-up)
+def startGame():
+	teams = createTeams()
+	roles = getRoles(teams)
+	players = addPlayersToTeams(roles)
+	return (teams, players)

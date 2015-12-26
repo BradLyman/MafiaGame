@@ -1,16 +1,20 @@
-from nightPhase import *
 from gameInitialization import *
+from getAndDoActions import *
+from checkState import *
 import Globals
 
 
 
 
 (teams, players) = startGame()
-actionDict = {0 : [], 1 : [], 2 : [], 3 : [], 4 : [], 5 : [], 6 : []}
-for player in players:
-	(targets, action, priority) = promptPlayerForAction(player, players)
-	player.currentAction = action
-	player.traits['targets'] = targets
-	actionDict[priority] += [player]
-actionSequence = orderActions(actionDict)
-doActions(actionSequence)
+while True:
+	actionDict = getActions(players)
+	actionSequence = orderActions(actionDict)
+	doActions(actionSequence)
+	for team in teams:
+		team.cleanUp()
+	winners = checkWinners(teams, players)
+	if winners:
+		print('The winners are:')
+		displayTeams(winners)
+		break

@@ -7,7 +7,7 @@ def getSpecificPlayers(playerList, requirements):
 		include = True
 		for key in requirements:
 			# Include the player if the desired trait is found in either the global dict, or the player's dict.
-			include = (requirements[key] == player.traits[key] or requirements[key] == player.getGlobalTrait[key])
+			include = (requirements[key] == player.traits[key] or requirements[key] == player.getGlobalTrait(key))
 			if not include: break
 		if include:
 			matches += [player]
@@ -52,5 +52,15 @@ def orderActions(actionDict):
 
 # Have each player perform its action.
 def doActions(players):
-	for player in actionSequence:
+	for player in players:
 		player.takeAction()
+
+# Get action selections from each player.  Return a dict with each player in a priority bucket.
+def getActions(players):
+	actionDict = {0 : [], 1 : [], 2 : [], 3 : [], 4 : [], 5 : [], 6 : []}
+	for player in players:
+		(targets, action, priority) = promptPlayerForAction(player, players)
+		player.currentAction = action
+		player.traits['targets'] = targets
+		actionDict[priority] += [player]
+	return actionDict

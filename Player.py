@@ -28,8 +28,11 @@ class Team:
 			if member.traits['alive']:
 				living += 1
 		return living
+	# Reset kills, but also run the cleanUp on team members.
 	def cleanUp(self):
 		self.killsLeft = self.killsPerTurn
+		for player in self.members:
+			player.cleanUp()
 
 # The Player class represents the users of the game, and has methods for the various actions those users can take.
 class Player:

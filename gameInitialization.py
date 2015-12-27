@@ -14,11 +14,21 @@ def displayRolesQty(usedRoles):
 	for role in usedRoles:
 		print('%s: %s' % (role.title, usedRoles[role]))
 
-# Ensure an integer is returned from an input prompt.  A False will be handled.
-def getIntOrFalse(message):
+# Ensure an integer (within range) is returned from an input prompt.  Otherwise, return False.
+def getIntOrFalse(message, minimum = 0, maximum = False):
 	value = input(message)
-	try: return int(value)
-	except: return False
+	try:
+		value = int(value)
+	except:
+		return False
+	else:
+		if not maximum:
+			maximum = value
+		if minimum <= value <= maximum:
+			return value
+		else:
+			print('Invalid input!')
+			return False
 
 # Return True or False, based on input of "y" or "n".
 def getYesOrNo(message):
@@ -70,7 +80,7 @@ def createPlayerList(listRoles):
 def createTeams():
 	teams = []
 	while True:
-		newTeamName = input("What is team %s's name?  Leave blank to finish team creation." % (len(teams) + 1))
+		newTeamName = input("What is team %s's name?  Leave blank to finish team creation.  " % (len(teams) + 1))
 		if not newTeamName: break
 		isThreat = getYesOrNo('Is this team a threat? (y/n):  ')
 		killsPerTurn = getIntOrFalse('How many kills per night are available to this team?  ')
@@ -92,6 +102,23 @@ def addPlayersToTeams(listRoles):
 		name = input('Player %s, what is your name?  ' % (i + 1))
 		playerList += [pair[1].createPlayer(pair[0], name)]
 	return playerList
+
+# Builds a string from a list.  Only uses a deliminator if 2 or more items.
+def buildStringFromList(inputList, deliminator = ', ', finalDelim = ', and '):
+	outputString = ''
+	totalItems = len(inputList)
+	for i, item in enumerate(inputList):
+		try:
+			item = item.name
+		except:
+			pass
+		if i == 0:
+			outputString = item
+		elif totalItems == i + 1:
+			outputString += finalDelim + item
+		else:
+			outputString += deliminator + item
+	return outputString
 
 # Start the game!  Return a list of teams, and a list of players (in order of sign-up)
 def startGame():

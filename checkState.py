@@ -1,4 +1,5 @@
 from getAndDoActions import *
+import Globals
 
 # Get a list of living threats.
 def getLivingThreats(teams):
@@ -34,8 +35,15 @@ def checkWinners(teams, players):
 		# All non-threatening teams win if the threats are eliminated.
 		return getNonThreats(teams)
 
+# Display all teams in list, and the members of those teams.
 def displayTeams(teams):
 	for i, team in enumerate(teams):
 		print('(#%s) %s' % (i + 1, team.name))
 		for j, player in enumerate(team.members):
 			print('\t(#%s) %s' % (j + 1, player.name))
+
+# Remove all traits, besides the 'name' trait.
+def cleanUpGlobalTraits(players):
+	Globals.globalPlayerTraits = []
+	for player in players:
+		Globals.globalPlayerTraits += [{'name' : player.name}]

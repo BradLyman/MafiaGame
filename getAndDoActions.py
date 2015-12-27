@@ -16,7 +16,7 @@ def getSpecificPlayers(playerList, requirements):
 # Display a numbered list of players.
 def displayPlayers(playerList):
 	for i, player in enumerate(playerList):
-		print('(%s) %s' % (i, player.name))
+		print('(%s) %s' % (i + 1, player.name))
 
 # Display a numbered list of actions.
 def displayActions(player):
@@ -24,11 +24,29 @@ def displayActions(player):
 	for i, action in enumerate(player.actions):
 		print('(%s) %s - \r\n\t%s' % (i + 1, action.name, action.description))
 
+# Prints the player's log, separating each day by line.
+def displayLog(player):
+	for i, line in enumerate(player.log):
+		print('--Night %s--' % i)
+		print(line)
+
+# If the player belongs to a collaborative team, display his teammates.
+def displayTeammates(player):
+	if player.team.collaborative:
+		print('Your teammates are:')
+		for i, teammate in enumerate(player.getTeammates()):
+			if teammate.traits['alive']: status = ''
+			else: 						 status = '  (DEAD)'
+			print('(%s) %s%s' % (i + 1, teammate.name, status))
+
 # Prompt the thplayer for an action choice, and a choice of target(s).
-def promptPlayerForAction(player,playerList):
+def promptPlayerForAction(player, playerList):
 	targets = []
+	print('---You belong to %s---' % player.team.name)
+	displayTeammates(player)
+	displayLog(player)
 	displayActions(player)
-	indexAction = getIntOrFalse('Which Action will you perform?  (Leave blank to pass this turn)')
+	indexAction = getIntOrFalse('Which Action will you perform?  (Leave blank to pass this turn)', maximum = len(player.actions))
 	if not choice: return targets, player.actions[0]
 	else: indexAction -= 1
 	action = player.actions[indexAction]
@@ -36,8 +54,8 @@ def promptPlayerForAction(player,playerList):
 	for i in range(1, action.totalTargets + 1):
 		validTargets = getSpecificPlayers(playerList, action.targetRequirements)
 		displayPlayers(validTargets)
-		indexTarget = getIntOrFalse('Who is target # %s?  ' % i)
-		targets += [validTargets[indexTarget]]
+		indexTarget = getIntOrFalse('Who is target # %s?  ' % i, maximum = len(validTargets))
+		targets += [validTargets[indexTarget - 1]]
 	return targets, action, priority
 
 # Create a list of players, ordered by action priority, shuffling within each priority.

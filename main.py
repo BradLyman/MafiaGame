@@ -2,12 +2,16 @@ from gameInitialization import *
 from getAndDoActions import *
 from checkState import *
 from voting import *
+from displayAndPrompt import *
 import Globals
 
-
-
-
-(teams, players) = startGame()
+teamInfoList = promptTeams()
+teams = createTeams(teamInfoList)
+roleList = []
+for team in teams:
+	roleList += getListOfTeamRoles(team)
+playerInfoList = getPlayerNames(roleList)	
+players = addPlayersToTeams(playerInfoList)
 Day = False
 for team in teams:
 	team.cleanUp()
@@ -15,15 +19,18 @@ cleanUpGlobalTraits(players)
 while True:
 	alivePlayers = getSpecificPlayers(players, {'alive' : True})
 	if Day:
-		getVotes(alivePlayers)
+		voteInfoList = getVotes(alivePlayers)
+		applyVotes(voteInfoList)
 		voteCountList = countVotes(alivePlayers)
 		displayVotes()
-		killTopVoted(voteCountList)
+		killedOff = killTopVoted(voteCountList)
+		displayKilledOff(killedOff)
 		Day = False
 	else:
-		actionDict = getActions(alivePlayers)
-		actionSequence = orderActions(actionDict)
-		doActions(actionSequence)
+		actionInfoList = getActions(alivePlayers)
+		actionDict = primeActions(actionInfoList)
+		actionOrderPlayers = orderPlayers(actionDict)
+		doActions(actionOrderPlayers)
 		for team in teams:
 			team.cleanUp()
 		cleanUpGlobalTraits(players)
